@@ -1,0 +1,17 @@
+{
+  "name": "lanche-facil-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API REST local (json-server) usada pelo app Lanche Fácil nas aulas de HTTP e Persistência.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "resetar": "node server.js --resetar",
+    "erro500": "node server.js --falha 500",
+    "json-invalido": "node server.js --json-invalido",
+    "lento": "node server.js --atraso 12000"
+  },
+  "dependencies": {
+    "json-server": "0.17.4"
+  }
+}

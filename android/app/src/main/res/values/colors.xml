@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mantém o fundo de abertura alinhado à cor predominante da identidade visual. -->
+    <color name="launch_background">#111D30</color>
+</resources>

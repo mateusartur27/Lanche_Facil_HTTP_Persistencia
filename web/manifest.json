@@ -1,0 +1,35 @@
+{
+    "name": "Lanche Fácil",
+    "short_name": "Lanche Fácil",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#111D30",
+    "theme_color": "#111D30",
+    "description": "Pedidos, pagamentos e retirada sem filas na lanchonete da Faculdade FANS.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/lanche-facil-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/lanche-facil-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/lanche-facil-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/lanche-facil-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

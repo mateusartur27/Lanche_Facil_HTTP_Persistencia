@@ -1,0 +1,80 @@
+{
+  "produtos": [
+    {
+      "id": "cachorro-quente",
+      "estabelecimentoId": "campus-principal",
+      "nome": "Cachorro-quente",
+      "descricao": "Pão, salsicha, molho, milho, batata palha e complementos.",
+      "preco": 1400,
+      "categoria": "Lanches",
+      "ativo": true,
+      "disponivel": true,
+      "estoque": 18,
+      "imagemUrl": null,
+      "ajusteImagem": "contain",
+      "criadoEm": "2026-08-16T00:00:00.000",
+      "atualizadoEm": "2026-08-16T00:00:00.000"
+    },
+    {
+      "id": "refrigerante",
+      "estabelecimentoId": "campus-principal",
+      "nome": "Refrigerante lata",
+      "descricao": "Lata de 350 ml servida gelada.",
+      "preco": 600,
+      "categoria": "Bebidas",
+      "ativo": true,
+      "disponivel": true,
+      "estoque": 24,
+      "imagemUrl": null,
+      "ajusteImagem": "contain",
+      "criadoEm": "2026-08-16T00:00:00.000",
+      "atualizadoEm": "2026-08-16T00:00:00.000"
+    },
+    {
+      "id": "salgado",
+      "estabelecimentoId": "campus-principal",
+      "nome": "Salgado assado",
+      "descricao": "Opções de frango, presunto e queijo conforme disponibilidade.",
+      "preco": 900,
+      "categoria": "Salgados",
+      "ativo": true,
+      "disponivel": true,
+      "estoque": 30,
+      "imagemUrl": null,
+      "ajusteImagem": "contain",
+      "criadoEm": "2026-08-16T00:00:00.000",
+      "atualizadoEm": "2026-08-16T00:00:00.000"
+    },
+    {
+      "id": "trident",
+      "estabelecimentoId": "campus-principal",
+      "nome": "Trident",
+      "descricao": "Goma de mascar em sabores variados.",
+      "preco": 350,
+      "categoria": "Conveniência",
+      "ativo": true,
+      "disponivel": true,
+      "estoque": 40,
+      "imagemUrl": null,
+      "ajusteImagem": "contain",
+      "criadoEm": "2026-08-16T00:00:00.000",
+      "atualizadoEm": "2026-08-16T00:00:00.000"
+    },
+    {
+      "id": "x-salada",
+      "estabelecimentoId": "campus-principal",
+      "nome": "X-Salada especial",
+      "descricao": "Hambúrguer, queijo, salada fresca e molho da casa.",
+      "preco": 1800,
+      "categoria": "Lanches",
+      "ativo": true,
+      "disponivel": true,
+      "estoque": 15,
+      "imagemUrl": null,
+      "ajusteImagem": "contain",
+      "criadoEm": "2026-08-16T00:00:00.000",
+      "atualizadoEm": "2026-08-16T00:00:00.000"
+    }
+  ],
+  "pedidos": []
+}
