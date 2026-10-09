@@ -65,7 +65,8 @@ Abra no navegador para ver o "banco remoto" mudando durante os testes:
 Código em [`cloudflare-api/src/index.js`](cloudflare-api/src/index.js) (Worker) e
 [`cloudflare-api/schema.sql`](cloudflare-api/schema.sql) (tabelas do D1 + cardápio inicial).
 
-**Simular erros** (apostila de HTTP, seção 15): em **Configurações → Servidor da API**, acrescente um prefixo ao endereço:
+**Simular erros** (apostila de HTTP, seção 15): em **Configurações → Servidor da API**, acrescente o trecho no fim do
+endereço e **toque em Salvar e testar** (só assim o app passa a usar o novo endereço):
 
 | Endereço | Efeito |
 |---|---|
@@ -74,7 +75,12 @@ Código em [`cloudflare-api/src/index.js`](cloudflare-api/src/index.js) (Worker)
 | `https://lanche-facil-api.mateus2002ns.workers.dev/simular/json-invalido` | os `GET` respondem um JSON quebrado |
 | `https://lanche-facil-api.mateus2002ns.workers.dev/simular/lento` | espera 12 s antes de responder (o app desiste em 8 s) |
 
-Depois, toque em **Usar padrão (nuvem)** para voltar ao normal.
+Depois, toque em **Usar padrão (nuvem)** → **Salvar e testar** para voltar ao normal.
+
+> **Sobre o banco remoto:** o app só conversa com a API por **HTTP + JSON** (`Content-Type: application/json`,
+> `jsonEncode`/`jsonDecode`), como pedem as apostilas. O banco por trás da API é um detalhe do servidor: aqui é o
+> Cloudflare D1 (SQL/SQLite), e cada registro é guardado como um documento JSON (coluna `json`, igual ao `db.json`
+> do json-server). Trocar o banco do servidor (Firebase, Firebird, MySQL...) não muda nada no aplicativo.
 
 Para publicar de novo ou voltar o servidor ao cardápio inicial (precisa de conta Cloudflare com acesso ao projeto):
 
@@ -200,36 +206,53 @@ Fluxo: **Tela → ViewModel → Repository (SQLite) → SyncService → ApiServi
 
 ## 6. Roteiro de testes para a apresentação
 
-Antes: instale o APK, abra o app e confira em **☰ → Configurações → Salvar e testar** a mensagem
-*"Conectado! HTTP 200 · N produto(s) no servidor"*.
-Deixe abertos no navegador do computador, para mostrar o servidor mudando (atualize com F5 após cada passo):
-<https://lanche-facil-api.mateus2002ns.workers.dev/produtos> e
-<https://lanche-facil-api.mateus2002ns.workers.dev/pedidos>.
+### Preparação
 
-| # | Teste | Como fazer | Resultado esperado |
-|---|---|---|---|
-| 1 | **Sem login** | Abrir o app | Vai direto para "Cardápio de hoje" |
-| 2 | **GET** | Puxar a lista para baixo (ou **Sincronizar**) | Faixa "Tudo salvo no aparelho e no servidor" e etiquetas **Sincronizado** |
-| 3 | **POST (exercício 10.1)** | ☰ → **Gestão do cardápio** → **Novo produto** → preencher → **Cadastrar** | SnackBar "Produto cadastrado. Sincronizado com o servidor."; produto aparece em `/produtos` no navegador e no cardápio; com `flutter run`, o console mostra o JSON retornado (201) |
-| 4 | **GET por id + FutureBuilder** | No produto → **Ver no servidor** | Carregando → nome, preço, estoque e o JSON recebido |
-| 5 | **PUT** | **Editar** o preço → **Salvar**; usar **+ / −** no estoque | Valor novo em `/produtos` no navegador |
-| 6 | **DELETE** | **Excluir** um produto → confirmar | Some do app e de `/produtos` |
-| 7 | **Pedido (POST /pedidos)** | Cardápio → **Adicionar** → carrinho → **Confirmar pedido** | "Pedido de R$ … confirmado. Sincronizado com o servidor."; aparece em `/pedidos`; estoque do produto diminui |
-| 8 | **Pedido (PUT)** | ☰ → **Pedidos** → **Marcar como pronto** → **Confirmar retirada** | Status muda no app e em `/pedidos` (`AWAITING_PICKUP` → `PICKED_UP`) |
-| 9 | **Cancelar** | Em outro pedido → **Cancelar pedido** | Status `CANCELED` e estoque devolvido |
-| 10 | **Pedido (DELETE)** | Pedido retirado/cancelado → **Excluir do histórico** | Some do app e de `/pedidos` |
-| 11 | **SharedPreferences** | **Configurações → Escuro**; adicionar itens ao carrinho; **fechar o app** (tirar dos recentes) e abrir de novo | Tema escuro e carrinho continuam |
-| 12 | **SQLite** | Com o celular em **modo avião**, fechar e abrir o app | Cardápio e pedidos continuam aparecendo (vêm do SQLite) |
-| 13 | **Offline** | Ainda em **modo avião**: criar um pedido e mudar um estoque | "… no aparelho. Envio pendente: Sem conexão com a API…"; etiqueta **Pendente de envio**; faixa vermelha com o número de pendências |
-| 14 | **Sincronizar pendentes** | Desligar o modo avião → **Sincronizar** | Etiquetas viram **Sincronizado**; registros aparecem no navegador |
-| 15 | **URL incorreta** | Configurações → `https://servidor-que-nao-existe.invalid` → **Salvar e testar** | "Falhou: Sem conexão com a API…" |
-| 16 | **404** | Configurações → endereço + `/simular/404` → **Salvar e testar**; ou **Ver no servidor** | Mensagem "Registro não encontrado no servidor (HTTP 404)" / "ainda não existe no servidor (HTTP 404)" |
-| 17 | **500** | Configurações → endereço + `/simular/500` → **Sincronizar** | "Não foi possível sincronizar. Erro interno no servidor (HTTP 500)." — dados seguem salvos no aparelho |
-| 18 | **JSON inválido** | Configurações → endereço + `/simular/json-invalido` → **Sincronizar** | "A API respondeu com um JSON inválido." |
-| 19 | **Carregamento e cliques repetidos** | Configurações → endereço + `/simular/lento` → **Cadastrar** um produto | Botão desabilitado com indicador de carregamento; após 8 s "O servidor demorou para responder" e o produto fica **Pendente de envio** |
-| 20 | **Voltar ao normal** | Configurações → **Usar padrão (nuvem)** → **Sincronizar** | Pendências enviadas e tudo **Sincronizado** |
+1. Baixe e instale o APK da página **[Releases](../../releases/latest)**.
+2. No app, abra ☰ → **Configurações** → **Salvar e testar**. Tem que aparecer *"Conectado! HTTP 200"*.
+3. No navegador do computador, deixe abertos (atualize com F5 depois de cada teste para mostrar o servidor mudando):
+   * <https://lanche-facil-api.mateus2002ns.workers.dev/produtos>
+   * <https://lanche-facil-api.mateus2002ns.workers.dev/pedidos>
 
-Exemplo de endereço com simulação: `https://lanche-facil-api.mateus2002ns.workers.dev/simular/500`.
+### Passo a passo
+
+1. **Sem login:** abra o app. Ele vai direto para o "Cardápio de hoje".
+2. **GET:** puxe a tela para baixo (ou toque em **Sincronizar**). Aparece "Tudo salvo no aparelho e no servidor" e os itens ficam com a etiqueta **Sincronizado**.
+3. **POST (exercício 10.1):** ☰ → **Gestão do cardápio** → **Novo produto** → preencha → **Cadastrar**. Aparece "Produto cadastrado. Sincronizado com o servidor." e o produto surge em `/produtos`.
+4. **GET por id (FutureBuilder):** no produto, toque em **Ver no servidor**. Mostra o carregamento e depois nome, preço, estoque e o JSON recebido.
+5. **PUT:** **Editar** o preço → **Salvar**, ou use **+ / −** no estoque. O valor muda em `/produtos`.
+6. **DELETE:** **Excluir** um produto → confirmar. Ele some do app e de `/produtos`.
+7. **Pedido (POST):** no cardápio, **Adicionar** → carrinho → **Confirmar pedido**. Aparece "Pedido de R$ … confirmado. Sincronizado com o servidor."; o pedido surge em `/pedidos` e o estoque do produto diminui.
+8. **Pedido (PUT):** ☰ → **Pedidos** → **Marcar como pronto** → **Confirmar retirada**. O status muda no app e em `/pedidos` (`AWAITING_PICKUP` → `PICKED_UP`).
+9. **Cancelar:** em outro pedido, **Cancelar pedido**. Status `CANCELED` e o estoque volta.
+10. **Pedido (DELETE):** num pedido retirado ou cancelado, **Excluir do histórico**. Some do app e de `/pedidos`.
+11. **SharedPreferences:** **Configurações → Escuro** e coloque itens no carrinho. Feche o app (tire dos recentes) e abra de novo: tema escuro e carrinho continuam.
+12. **SQLite:** ative o **modo avião**, feche e abra o app. Cardápio e pedidos continuam aparecendo (vêm do banco do aparelho).
+13. **Offline:** ainda em modo avião, crie um pedido e mude um estoque. Aparece "… no aparelho. Envio pendente: Sem conexão com a API…", a etiqueta **Pendente de envio** e a faixa vermelha com o número de pendências.
+14. **Sincronizar pendentes:** desligue o modo avião e toque em **Sincronizar**. Tudo vira **Sincronizado** e aparece no navegador.
+15. **URL errada:** **Configurações** → apague o endereço e digite `https://servidor-que-nao-existe.invalid` → **Salvar e testar**. Aparece "Falhou: Sem conexão com a API…".
+16. **Erros simulados:** em **Configurações**, acrescente o trecho no **fim** do endereço da API e **toque em Salvar e testar** (sem isso o app continua usando o endereço anterior):
+
+    | Acrescente | Depois de **Salvar e testar** | Resultado esperado |
+    |---|---|---|
+    | `/simular/404` | Toque em **Ver no servidor** num produto | "Falhou: Registro não encontrado no servidor (HTTP 404)" no teste e "(HTTP 404)" no produto |
+    | `/simular/500` | Toque em **Sincronizar** | "Erro interno no servidor (HTTP 500)" — os dados continuam salvos no aparelho |
+    | `/simular/json-invalido` | Toque em **Sincronizar** | "A API respondeu com um JSON inválido." |
+    | `/simular/lento` | Espere o teste terminar (8 s) e **Cadastre** um produto | Botão bloqueado com indicador de carregamento; após 8 s "O servidor demorou para responder" e o produto fica **Pendente de envio** |
+
+    Exemplo de endereço completo: `https://lanche-facil-api.mateus2002ns.workers.dev/simular/500`.
+17. **Voltar ao normal:** **Configurações** → **Usar padrão (nuvem)** → **Salvar e testar** → **Sincronizar**. As pendências são enviadas e tudo fica **Sincronizado**.
+
+### Zerar o servidor antes da apresentação
+
+Dentro da pasta `cloudflare-api` (precisa estar logado no Cloudflare com `npx wrangler login`):
+
+```bash
+npx wrangler d1 execute lanche-facil-db --remote --file schema.sql
+```
+
+Depois de zerar, puxe a tela para baixo no app: ele se alinha com o servidor (pedidos de teste já sincronizados somem
+do aparelho e o cardápio volta ao inicial). Para começar o celular totalmente do zero, limpe os dados do app nas configurações do Android.
 
 ## 7. Testes automatizados
 
