@@ -1,0 +1,19 @@
+// Configuração do Worker que publica a API REST do Lanche Fácil no Cloudflare.
+// Deploy: npx wrangler deploy (dentro desta pasta).
+{
+  "$schema": "https://unpkg.com/wrangler@4.149.0/config-schema.json",
+  "name": "lanche-facil-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-15",
+  "account_id": "c4ff1e50d3dfa7c687923cbaafe1b356",
+  "workers_dev": true,
+  // Banco remoto da apostila: um SQLite gerenciado (D1) no Cloudflare.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lanche-facil-db",
+      "database_id": "e711b730-c35b-4830-94c2-285fceee0ef1"
+    }
+  ],
+  "observability": { "enabled": true }
+}

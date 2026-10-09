@@ -42,16 +42,22 @@ class PreferencesService {
   // Endereço da API REST.
   // ---------------------------------------------------------------------------
 
-  /// Endereço usado quando a pessoa ainda não configurou outro.
-  ///
-  /// No emulador Android, `10.0.2.2` aponta para o computador que roda a API.
-  /// No navegador e no computador, a API local responde em `localhost`.
-  static String get defaultApiUrl {
+  /// API publicada no Cloudflare (pasta cloudflare-api/): funciona em qualquer
+  /// aparelho com internet, sem precisar ligar um servidor no computador.
+  static const String cloudApiUrl =
+      'https://lanche-facil-api.mateus2002ns.workers.dev';
+
+  /// API local opcional (pasta api/, json-server). No emulador Android,
+  /// `10.0.2.2` aponta para o computador; no navegador, `localhost`.
+  static String get localApiUrl {
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       return 'http://10.0.2.2:3000';
     }
     return 'http://localhost:3000';
   }
+
+  /// Endereço usado quando a pessoa ainda não configurou outro.
+  static String get defaultApiUrl => cloudApiUrl;
 
   /// Endereço atual da API (salvo ou padrão).
   String get apiUrl => _prefs.getString(apiUrlKey) ?? defaultApiUrl;

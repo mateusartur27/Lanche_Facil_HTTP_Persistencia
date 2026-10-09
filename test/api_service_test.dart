@@ -72,6 +72,17 @@ void main() {
     );
   });
 
+  test('409 (id duplicado na API do Cloudflare) vira mensagem própria',
+      () async {
+    final client = MockClient((_) async => http.Response('{}', 409));
+    final service = ApiService(baseUrl: () => 'http://api.test', client: client);
+    await expectLater(
+      service.criarProduto(product),
+      throwsA(isA<ApiException>()
+          .having((e) => e.message, 'message', contains('já existe'))),
+    );
+  });
+
   test('sem conexão vira mensagem amigável', () async {
     final api = FakeRestApi()..offline = true;
     final service = ApiService(baseUrl: () => 'http://api.test', client: api.client);

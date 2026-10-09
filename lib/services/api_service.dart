@@ -236,6 +236,8 @@ class ApiService {
       401 => 'Autenticação necessária (HTTP 401).',
       403 => 'Acesso não permitido (HTTP 403).',
       404 => 'Registro não encontrado no servidor (HTTP 404).',
+      409 => 'Este registro já existe no servidor (HTTP 409).',
+      429 => 'O servidor atingiu o limite de registros (HTTP 429).',
       500 => 'Erro interno no servidor (HTTP 500).',
       >= 500 => 'O servidor está indisponível (HTTP $statusCode).',
       _ => 'Resposta inesperada do servidor (HTTP $statusCode).',

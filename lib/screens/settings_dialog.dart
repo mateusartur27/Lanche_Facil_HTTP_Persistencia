@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../config/app_dependencies.dart';
 import '../config/theme.dart';
 import '../services/api_service.dart';
+import '../services/preferences_service.dart';
 import '../widgets/sync_status.dart';
 
 /// Abre as configurações: aparência, servidor da API e sincronização.
@@ -149,14 +150,16 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 keyboardType: TextInputType.url,
                 decoration: const InputDecoration(
                   labelText: 'Endereço base da API',
-                  hintText: 'http://10.0.2.2:3000',
+                  hintText: PreferencesService.cloudApiUrl,
                   prefixIcon: Icon(Icons.dns_outlined),
                 ),
               ),
               const SizedBox(height: 6),
               Text(
-                'Emulador Android: http://10.0.2.2:3000 · Navegador: '
-                'http://localhost:3000 · Celular: http://IP-do-computador:3000',
+                'Padrão: API na nuvem (Cloudflare). Para testar erros, acrescente '
+                '/simular/500, /simular/json-invalido ou /simular/lento ao endereço. '
+                'API local opcional: http://10.0.2.2:3000 (emulador) ou '
+                'http://IP-do-computador:3000 (celular).',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 10),
@@ -175,9 +178,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     label: const Text('Salvar e testar'),
                   ),
                   TextButton(
+                    key: const Key('use-default-api'),
                     onPressed:
                         _testing ? null : () => _saveUrl(restoreDefault: true),
-                    child: const Text('Usar padrão'),
+                    child: const Text('Usar padrão (nuvem)'),
                   ),
                 ],
               ),

@@ -53,3 +53,6 @@ api/db.json
 
 # Configuração local do Android SDK
 android/local.properties
+
+# Cache local do Wrangler (Cloudflare)
+cloudflare-api/.wrangler/
