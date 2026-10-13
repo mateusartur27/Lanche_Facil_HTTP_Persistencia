@@ -100,6 +100,9 @@ flutter run -d chrome  # navegador
 
 APK: `flutter build apk --release` → `build/app/outputs/flutter-apk/app-release.apk`.
 
+Versões usadas (clone limpo deste repositório compilado com sucesso): **Flutter 3.41.9**, Dart 3.11.5,
+JDK 21, Android SDK 36, Android Gradle Plugin 9.1 e Gradle 9.3.1. Recomenda-se Flutter 3.41 ou mais recente.
+
 ### 2.4 (Opcional) API local com json-server
 
 Útil para mostrar o banco remoto como arquivo (`api/db.json`) ou testar sem internet externa:
@@ -205,6 +208,8 @@ Fluxo: **Tela → ViewModel → Repository (SQLite) → SyncService → ApiServi
 | Busca digitada, categoria selecionada | Memória | Não |
 
 ## 6. Roteiro de testes para a apresentação
+
+Versão para imprimir: [`docs/Roteiro_de_Testes.pdf`](docs/Roteiro_de_Testes.pdf).
 
 ### Preparação
 
