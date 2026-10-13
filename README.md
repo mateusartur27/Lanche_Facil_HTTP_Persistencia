@@ -248,7 +248,7 @@ Versão para imprimir: [`docs/Roteiro_de_Testes.pdf`](docs/Roteiro_de_Testes.pdf
     Exemplo de endereço completo: `https://lanche-facil-api.mateus2002ns.workers.dev/simular/500`.
 17. **Voltar ao normal:** **Configurações** → **Usar padrão (nuvem)** → **Salvar e testar** → **Sincronizar**. As pendências são enviadas e tudo fica **Sincronizado**.
 
-### Zerar o servidor antes da apresentação
+### Zerar o servidor
 
 Dentro da pasta `cloudflare-api` (precisa estar logado no Cloudflare com `npx wrangler login`):
 
